@@ -1,0 +1,16 @@
+---
+# Demo playbook to deploy Java-based web application
+
+# - name: apply common configuration
+#   hosts: all-in-one
+
+#   roles:
+#     - common
+
+- name: deploy the app with all dependencies
+  hosts: all-in-one
+
+  roles:
+    # - webserver
+    - postgresql
+    - java-web-app

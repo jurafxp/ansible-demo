@@ -6,3 +6,5 @@ https_port: 443
 dbname: spring
 dbuser: dbuser
 dbpassword: dbpassword
+
+postgresql_user: postgres

@@ -1,5 +1,8 @@
 ---
-- name: Install OpenJDK 1.8 and some basic dependencies
-    yum: name={{item}} state=installed update_cache=yes
-    with_items:
-      - java-1.8.0-openjdk-headless
+- name: install OpenJDK 1.8 and some basic dependencies
+  yum:
+    name={{item}}
+    state=installed
+    update_cache=yes
+  with_items:
+    - java-1.8.0-openjdk-headless

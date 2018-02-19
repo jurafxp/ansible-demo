@@ -6,3 +6,13 @@
     update_cache=yes
   with_items:
     - java-1.8.0-openjdk-headless
+    - maven
+
+- name: check out a git repository locally
+  local_action:
+    module: git
+    repo: ssh://git@github.com:khoubyari/spring-boot-rest-example.git
+    dest: /tmp/spring-boot-rest-example
+
+- name: recursively copy files from ansible host to target
+  local_action: command rsync -a /tmp/spring-boot-rest-example webserver:/tmp/

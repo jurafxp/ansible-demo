@@ -1,7 +1,7 @@
 # Here are variables related to the Java web app installation
 
-http_port: 80
-https_port: 443
+spring_port: 8080
+nginx_port: 443
 
 dbname: spring
 dbuser: dbuser

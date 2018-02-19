@@ -8,7 +8,7 @@
 #     - common
 
 - name: deploy the app with all dependencies
-  hosts: all-in-one
+  hosts: webserver
 
   roles:
     # - webserver

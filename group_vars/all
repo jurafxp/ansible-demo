@@ -2,6 +2,7 @@
 
 spring_port: 8080
 nginx_port: 443
+nginx_vhost: "{{ inventory_hostname }}"
 
 dbname: spring
 dbuser: dbuser

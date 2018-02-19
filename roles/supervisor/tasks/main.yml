@@ -1,0 +1,39 @@
+---
+- name: install supervisord
+  yum:
+    name: supervisor
+    update_cache: "yes"
+
+- name: "Creating {{app_user_group}} Group"
+  group:
+    name: "{{app_user_group}}"
+    state: present
+
+- name: "Creating {{app_user}} User"
+  user:
+    name: "{{app_user}}"
+    group: "{{app_user_group}}"
+
+- name: "Creating {{app_directory}} Directory"
+  file:
+    path: "{{app_directory}}"
+    state: directory
+    mode: 0755
+    owner: "{{app_user}}"
+    group: "{{app_user_group}}"
+
+- name: "Copying supervisor {{app_name}}.conf"
+  template:
+    src: supervisorapp.conf
+    dest: "/etc/supervisor.d/{{app_name}}.conf"
+  notify: restart supervisord
+
+- name: Copying stubbornjava secure.conf
+  template:
+    src: secure.conf
+    dest: "{{app_directory}}/secure.conf"
+    owner: "{{app_user}}"
+    group: "{{app_user_group}}"
+    mode: u=r,g=r,o=
+  notify: restart supervisord
+

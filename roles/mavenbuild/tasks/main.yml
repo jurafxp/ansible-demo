@@ -1,0 +1,44 @@
+---
+- name: install maven and git locally
+  local_action:
+    module: yum
+    name: "{{ item }}"
+    state: installed
+    update_cache: "yes"
+  vars:
+    ansible_become: "yes"
+  with_items:
+    - git
+    - maven
+
+- name: clean artifact path
+  local_action:
+    module: file
+    state: absent
+    path: /tmp/spring-boot-rest-example
+
+- name: check out a git repository locally
+  local_action:
+    module: git
+    repo: https://github.com/khoubyari/spring-boot-rest-example.git
+    dest: /tmp/spring-boot-rest-example
+
+- name: build JAR using maven locally
+  local_action: command mvn -DoutputDirectory=/tmp/spring-boot-rest-example/target clean package chdir=/tmp/spring-boot-rest-example
+
+- name: ensure app directory exists
+  file: path=/opt/app state=directory
+
+- name: deploy JAR to webserver
+  copy:
+    src: /tmp/spring-boot-rest-example/target/spring-boot-rest-example-0.5.0.war
+    dest: /opt/app/spring-boot-rest-example.war
+    owner: nginx
+    group: nginx
+    force: "yes"
+
+- name: install supervisord
+  yum:
+    name: supervisor
+    update_cache: "yes"
+

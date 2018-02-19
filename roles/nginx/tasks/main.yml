@@ -1,0 +1,41 @@
+---
+- name: import epel GPG key
+  command: rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
+
+- name: Add epel repository
+  yum:
+    name=epel-release
+    state=installed
+    update_cache=yes
+
+- name: install nginx and java app dependencies
+  yum:
+    name={{ item }}
+    state=installed
+    update_cache=yes
+  with_items:
+    - java-1.8.0-openjdk-headless
+    - nginx
+    - python2-pip
+
+- name: install ansible python dependencies
+  pip:
+    name: pyOpenSSL
+    state: latest
+  become: True
+
+- name: generate a Self Signed OpenSSL certificate
+  command: >
+    openssl req -new -nodes -x509 -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN="{{ nginx_vhost }} -days 3650 -keyout /etc/ssl/certs/{{ nginx_vhost }}.key -out /etc/ssl/certs/{{ nginx_vhost }}.crt -extensions v3_ca
+  notify: restart nginx
+
+- name: copy nginx configuration for java app
+  template: src=spring.conf dest=/etc/nginx/conf.d/spring.conf
+  notify: restart nginx
+
+- name: enable nginx service
+  service:
+    name: nginx
+    enabled: yes
+    state: started
+

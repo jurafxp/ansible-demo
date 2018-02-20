@@ -1,0 +1,6 @@
+---
+- name: supervisorctl update
+  command: supervisorctl update spring-boot-rest-exampl
+
+- name: supervisorctl restart
+  command: supervisorctl restart spring-boot-rest-exampl

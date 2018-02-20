@@ -22,7 +22,12 @@
   pip:
     name: pyOpenSSL
     state: latest
-  become: True
+  become: "True"
+
+- seboolean:
+    name: httpd_can_network_connect
+    state: "yes"
+    persistent: "yes"
 
 - name: generate a Self Signed OpenSSL certificate
   command: >
@@ -30,12 +35,13 @@
   notify: restart nginx
 
 - name: copy nginx configuration for java app
-  template: src=spring.conf dest=/etc/nginx/conf.d/spring.conf
+  template:
+    src=spring.conf
+    dest=/etc/nginx/conf.d/spring.conf
   notify: restart nginx
 
 - name: enable nginx service
   service:
     name: nginx
-    enabled: yes
+    enabled: "yes"
     state: started
-

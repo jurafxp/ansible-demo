@@ -6,6 +6,7 @@
 
 - name: copy supervisord configuration for java app
   template: src=javaapp.conf dest=/etc/supervisord.d/javaapp.ini
+  notify: supervisorctl update
 
 - name: enable supervisord service
   service:

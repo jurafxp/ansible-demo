@@ -1,6 +1,6 @@
 # Here are variables related to the Java web app installation
 
-spring_port: 8080
+spring_port: 8090
 nginx_port: 443
 nginx_vhost: "{{ inventory_hostname }}"
 

@@ -36,9 +36,3 @@
     owner: nginx
     group: nginx
     force: "yes"
-
-- name: install supervisord
-  yum:
-    name: supervisor
-    update_cache: "yes"
-

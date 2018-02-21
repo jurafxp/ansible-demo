@@ -10,30 +10,36 @@
   with_items:
     - git
     - maven
+  run_once: true
 
 - name: clean artifact path
   local_action:
     module: file
     state: absent
     path: /tmp/spring-boot-rest-example
+  run_once: true
 
 - name: check out a git repository locally
   local_action:
     module: git
     repo: https://github.com/khoubyari/spring-boot-rest-example.git
     dest: /tmp/spring-boot-rest-example
+  run_once: true
 
 - name: add postgresql dependency to pom.xml
   local_action: command sed -i 's/<dependencies>/<dependencies>\n<!--postgresql-->\n<dependency>\n<groupId>postgresql<\/groupId>\n<artifactId>postgresql<\/artifactId>\n<version>9.1-901-1.jdbc4<\/version>\n<\/dependency>\n/g' /tmp/spring-boot-rest-example/pom.xml
+  run_once: true
 
 - name: add application.xml with postgresql connection string
   local_action:
     module: template
     src: application.xml
     dest: /tmp/spring-boot-rest-example/src/main/resources/application.yml
+  run_once: true
 
 - name: build JAR using maven locally
   local_action: command mvn -DoutputDirectory=/tmp/spring-boot-rest-example/target clean package chdir=/tmp/spring-boot-rest-example
+  run_once: true
 
 - name: ensure app directory exists
   file: path=/opt/app state=directory
